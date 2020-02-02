@@ -6,3 +6,5 @@ A web application for exploring the relationship between cancer and nitrate in w
 ## Development Notes
 
 For notes and logs from the development process, see the [Development Notes](/devNotes.md).
+
+For higher-level thoughts and strategies, see the [Development Journal](/dev-journal) folder.
