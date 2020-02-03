@@ -6,13 +6,13 @@ Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](
 ## Architecture Brainstorming
 
 The Stack
-- `Leaflet`     (Map)
+- `Leaflet`     (Interactive mapping interface)
 - `Angular`     (Front-end JavaScript framework)
 - `NPM`         (Front-end package manager)
 - `Flask`       (Back-end Python web framework)
 - `Pip`         (Python package manager)
 - `Anaconda`    (Used for Python environment management)
-- (Need a spatial analysis / statistics library for the core business logic of the application)
+- `pysal`       (Geostatistical analysis)
 - `Heroku`      (Platform / host)
 - `VS Code`     (IDE / code editor)
 
