@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="en"><Esri><CreaDate>20191013</CreaDate><CreaTime>14441200</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.6\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20191013" Time="144412">CalculateField well_nitrate nitr_con "Abs ( [nitr_ran] )" VB #</Process></lineage></DataProperties></Esri></metadata>
