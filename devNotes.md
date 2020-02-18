@@ -50,6 +50,9 @@ Refined steps log
 3. We can now use the tract layer (containing both nitrate concentration and cancer rate for linear regression)
 4. Linear regression simply outputs a report. Need to learn how to interpret this report.
 
+References
+
+- ["Affine" info, required when using zonal stats on ndarray instead of tif](https://gis.stackexchange.com/questions/343529/which-affine-format-to-use-in-rasterstats-zonal-stats)
 
 Old Steps Log
 
