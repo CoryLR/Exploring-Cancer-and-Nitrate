@@ -2,22 +2,59 @@ print()
 print("> > > Starting 'linearRegression.py'.")
 
 #***** Import tools *****
+
 import numpy as np
+
 import pandas as pd  #* To read data
-import geopandas as gpd  #* To read data
+
+# import geopandas as gpd  #* To read data
+from geopandas import GeoDataFrame
+
+# import statsmodels.api as sm
 from rasterstats import zonal_stats
-import statsmodels.api as sm
+
+# import statsmodels.api as sm
+from statsmodels.api import OLS
+
+import gdal
+from datetime import datetime
+from random import getrandbits
+
+# import rasterio #* Built on top of GDAL
 
 print()
 print("> > > Imports successful.")
 
 #***** Get data into one dataframe for the regression *****
 
-nitrateAndCancer_geoJson = zonal_stats("data/working/cancer_tracts.shp", "data/working/nitrate_interpolated.tif", stats="mean", all_touched=True, geojson_out=True)
+
+#* Make a unique tag for this process
+# timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')
+timestamp = datetime.utcnow().strftime('%Y%m%d-%H%M%S-')
+# randomNumber = getrandbits(32)
+randomNumber = getrandbits(6)
+uniqueTag = f'{timestamp}{randomNumber}'
+
+#* Perform IDW interpolation on well data
+idwFilePath = f'data/working/nitrate_interpolation_{uniqueTag}.tif'
+power = 3
+output = gdal.Grid(idwFilePath,'data/working/well_nitrate.shp', algorithm=f'invdist:power={power}', zfield='nitr_con', outputBounds=[-92.90, 47.32, -86.75, 42.48], nodata=-999)
+
+# idwFilePath = 'data/working/nitrate_interpolation_20200223155231204838397322666.tif'
+
+# from time import sleep
+# sleep(1)
+# sleep(1)
+# sleep(1)
+# sleep(1)
+
+# nitrateAndCancer_geoJson = zonal_stats("data/working/cancer_tracts.shp", "data/working/nitrate_interpolated.tif", stats="mean", all_touched=True, geojson_out=True)
+# nitrateAndCancer_geoJson = zonal_stats("data/working/cancer_tracts.shp", "data/working/nitrate_interpolation_20200223-161632-18.tif", stats="mean", all_touched=True, geojson_out=True)
+nitrateAndCancer_geoJson = zonal_stats("data/working/cancer_tracts.shp", idwFilePath, stats="mean", all_touched=True, geojson_out=True)
 
 # print("nitrateAndCancer_geoJson:\n", nitrateAndCancer_geoJson)
 
-nitrateAndCancer_geoDataFrame = gpd.GeoDataFrame(nitrateAndCancer_geoJson)
+nitrateAndCancer_geoDataFrame = GeoDataFrame(nitrateAndCancer_geoJson)
 
 # print("type(nitrateAndCancer_geoDataFrame):\n", type(nitrateAndCancer_geoDataFrame))
 
@@ -34,15 +71,16 @@ nitrateAndCancer_geoDataFrame = gpd.GeoDataFrame(nitrateAndCancer_geoJson)
 # print("\ntype(nitrateAndCancer_geoDataFrame.properties):\n", type(nitrateAndCancer_geoDataFrame.properties))
 # print("\nnitrateAndCancer_geoDataFrame['properties'][0]:\n", nitrateAndCancer_geoDataFrame['properties'][0])
 
-# Get values of particular key in list of dictionaries using List Comprehension
+# Get the appropriate attribute columns for regression (cancer rate and nitrate concentration)
+# ^ Done by getting values of a particular key in list of dictionaries using List Comprehension
 cancerRate_column_values = [ sub['canrate'] for sub in nitrateAndCancer_geoDataFrame['properties'] ]
 nitrateConcentration_column_values = [ sub['mean'] for sub in nitrateAndCancer_geoDataFrame['properties'] ]
 
-i = 1
-print("\ncancerRate_column_values[0], nitrateConcentration_column_values[0]:\n", cancerRate_column_values[0], nitrateConcentration_column_values[0])
-while i < 10:
-  print(cancerRate_column_values[i], nitrateConcentration_column_values[i])
-  i += 1
+# i = 1
+# print("\ncancerRate_column_values[0], nitrateConcentration_column_values[0]:\n", cancerRate_column_values[0], nitrateConcentration_column_values[0])
+# while i < 10:
+#   print(cancerRate_column_values[i], nitrateConcentration_column_values[i])
+#   i += 1
 
 
 # y = nitrateAndCancer_geoDataFrame.iloc[:, 1].values.reshape(-1, 1)  #* -1 means that calculate the dimension of rows, but have 1 column
@@ -66,7 +104,7 @@ X = nitrateConcentration_column_values
 # Y = [1,2,2,4,5,6,7,7,9,10,12,12,13,14,15,15,16,18,20,20,21,22,23,24,25,28,27,28,29,29,31,32,33,35,35,36,37,38,40]
 # X = [9, 900, 7, 60, 50, 50, 390, 380, 37, 37, 350, 340, 340, 330, 3210, 310, 30, 2190, 2190, 2180, 2160, 2150, 2130, 2130, 2130, 21210, 2100, 20, 190, 17, 160, 140, 140, 130, 130, 120, 110, 100, 10]
 
-model = sm.OLS(Y, X)
+model = OLS(Y, X)
 results = model.fit()
 print(results.summary())
 

@@ -53,6 +53,8 @@ Refined steps log
 References
 
 - ["Affine" info, required when using zonal stats on ndarray instead of tif](https://gis.stackexchange.com/questions/343529/which-affine-format-to-use-in-rasterstats-zonal-stats)
+- [Working with GRASS without starting it explicitly](https://grasswiki.osgeo.org/wiki/Working_with_GRASS_without_starting_it_explicitly)
+- [Esri guide to interpreting OLS results](https://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-statistics-toolbox/interpreting-ols-results.htm)
 
 Old Steps Log
 
@@ -62,4 +64,20 @@ Old Steps Log
 - `2020-02-08:1415` [GDAL] Rasterize: Cancer tracts --> Input parameters: { 'BURN' : None, 'DATA_TYPE' : 5, 'EXTENT' : '-92.889433,-86.750119,42.491912,47.309822 [EPSG:4269]', 'FIELD' : 'canrate', 'HEIGHT' : 45, 'INIT' : None, 'INPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/cancer_tracts.shp', 'INVERT' : False, 'NODATA' : -1, 'OPTIONS' : '', 'OUTPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/cancer_tracts_rasterized.tif', 'UNITS' : 0, 'WIDTH' : 60 }
 - `2020-02-08:1300` [QGIS] IDW: Interpolated Nitrate wells --> Input parameters: { 'DISTANCE_COEFFICIENT' : 2, 'EXTENT' : '-92.889433,-86.750119,42.491912,47.309822 [EPSG:4269]', 'INTERPOLATION_DATA' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/well_nitrate.shp::~::0::~::-1::~::0', 'OUTPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/nitrate_interpolated2.tif', 'PIXEL_SIZE' : 0.1 }
 
+## Meetings
 
+2020-02-21 Call with Chris Scheele
+
+- Visualization options:
+  - **Display residuals on a map**
+    - There should be a way to access residuals
+    - Plan b: Loop and predict my variable, do the subtraction myself
+  - Display a scatter plot
+- Just give the user the linear regression summary in full, don't spend too much time on individual diagnostics
+- For programmatic OLS interpolation - use GDAL, debug my pip install; I should be able to `pip install gdal`
+- PATH FORWARD
+  - Debug GDAL
+  - Use GDAL to perform IDW
+  - Start building web app backend
+  - Start building web app frontend
+  - Smooth it all out...
