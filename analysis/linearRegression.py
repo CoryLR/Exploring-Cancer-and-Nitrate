@@ -3,7 +3,7 @@
 #       University of Wisconsin-Madison
 
 # User inputs
-input_iwd_power = 100
+input_iwd_power = 1
 
 print()
 print("> > > Starting 'linearRegression.py'.")
@@ -15,6 +15,7 @@ from statsmodels.api import OLS
 from gdal import Grid
 from datetime import datetime
 from random import getrandbits
+from os import remove
 print("> > > Imports successful.")
 
 #* Make a unique tag for this process
@@ -44,3 +45,6 @@ results = model.fit()
 
 #* Display Results
 print(results.summary())
+
+#* Clean up temp files
+remove(idwFilePath)

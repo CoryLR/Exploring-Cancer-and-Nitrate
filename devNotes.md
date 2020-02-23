@@ -42,27 +42,17 @@ Notes
   - Cancer census tracts
   - Nitrate wells
 
-Refined steps log
-
-
-1. `2020-02-08:1300` [QGIS] [IDW] Interpolated Nitrate wells --> Input parameters: { 'DISTANCE_COEFFICIENT' : 2, 'EXTENT' : '-92.889433,-86.750119,42.491912,47.309822 [EPSG:4269]', 'INTERPOLATION_DATA' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/well_nitrate.shp::~::0::~::-1::~::0', 'OUTPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/nitrate_interpolated2.tif', 'PIXEL_SIZE' : 0.1 }
-2. `2020-02-08:1400` [QGIS] [RasterStats] Created an average nitrate per tract
-3. We can now use the tract layer (containing both nitrate concentration and cancer rate for linear regression)
-4. Linear regression simply outputs a report. Need to learn how to interpret this report.
-
 References
 
 - ["Affine" info, required when using zonal stats on ndarray instead of tif](https://gis.stackexchange.com/questions/343529/which-affine-format-to-use-in-rasterstats-zonal-stats)
 - [Working with GRASS without starting it explicitly](https://grasswiki.osgeo.org/wiki/Working_with_GRASS_without_starting_it_explicitly)
 - [Esri guide to interpreting OLS results](https://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-statistics-toolbox/interpreting-ols-results.htm)
+- [Understanding Conda and Pip (Best quick guide I've found)](https://www.anaconda.com/understanding-conda-and-pip/)
+- [Deploy a Python (Dash) app to Heroku using Conda environments](https://stackoverflow.com/questions/47949173/deploy-a-python-dash-app-to-heroku-using-conda-environments-instead-of-virtua)
 
-Old Steps Log
+## Important commands
 
-- `2020-02-10:2018` [GRASS] Linear Regression on the clipped nitrate interpolation and the rasterized cancer tracts
-- `2020-02-10:2018` [GDAL] Clipped raster
-- `2020-02-10:2018` [GDAL] Dissolve to get Wisconsin outline --> Input parameters: {'INPUT':'/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/cancer_tracts.shp','FIELD':None,'GEOMETRY':'geometry','EXPLODE_COLLECTIONS':False,'KEEP_ATTRIBUTES':False,'COUNT_FEATURES':False,'COMPUTE_AREA':False,'COMPUTE_STATISTICS':False,'STATISTICS_ATTRIBUTE':None,'OPTIONS':'','OUTPUT':'/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/wisconsin_outline.shp'}
-- `2020-02-08:1415` [GDAL] Rasterize: Cancer tracts --> Input parameters: { 'BURN' : None, 'DATA_TYPE' : 5, 'EXTENT' : '-92.889433,-86.750119,42.491912,47.309822 [EPSG:4269]', 'FIELD' : 'canrate', 'HEIGHT' : 45, 'INIT' : None, 'INPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/cancer_tracts.shp', 'INVERT' : False, 'NODATA' : -1, 'OPTIONS' : '', 'OUTPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/cancer_tracts_rasterized.tif', 'UNITS' : 0, 'WIDTH' : 60 }
-- `2020-02-08:1300` [QGIS] IDW: Interpolated Nitrate wells --> Input parameters: { 'DISTANCE_COEFFICIENT' : 2, 'EXTENT' : '-92.889433,-86.750119,42.491912,47.309822 [EPSG:4269]', 'INTERPOLATION_DATA' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/well_nitrate.shp::~::0::~::-1::~::0', 'OUTPUT' : '/Users/clr/code/Exploring-Cancer-and-Nitrate/analysis/data/working/nitrate_interpolated2.tif', 'PIXEL_SIZE' : 0.1 }
+- [Bash] Saves conda dependencies: `conda env export > environment-linearRegression.py.yml`
 
 ## Meetings
 
@@ -76,8 +66,9 @@ Old Steps Log
 - Just give the user the linear regression summary in full, don't spend too much time on individual diagnostics
 - For programmatic OLS interpolation - use GDAL, debug my pip install; I should be able to `pip install gdal`
 - PATH FORWARD
-  - Debug GDAL
-  - Use GDAL to perform IDW
-  - Start building web app backend
-  - Start building web app frontend
-  - Smooth it all out...
+  - [Done!] Debug GDAL
+  - [Done!] Use GDAL to perform IDW
+  - [TODO] Get residuals from regression and apply them back to the GeoJSON which I need to return to the front end
+  - [Research...] Start building web app backend
+  - [TODO] Start building web app frontend
+  - [TODO] Smooth it all out...
