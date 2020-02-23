@@ -37,8 +37,11 @@ uniqueTag = f'{timestamp}{randomNumber}'
 
 #* Perform IDW interpolation on well data
 idwFilePath = f'data/working/nitrate_interpolation_{uniqueTag}.tif'
-power = 3
-output = gdal.Grid(idwFilePath,'data/working/well_nitrate.shp', algorithm=f'invdist:power={power}', zfield='nitr_con', outputBounds=[-92.90, 47.32, -86.75, 42.48], nodata=-999)
+power = 2
+# output = gdal.Grid(idwFilePath,'data/working/well_nitrate.shp', algorithm=f'invdist:power={power}', zfield='nitr_con', outputBounds=[-92.90, 47.32, -86.75, 42.48])
+gdal.Grid(idwFilePath,'data/working/well_nitrate.shp', algorithm=f'invdist:power={power}', zfield='nitr_con', outputBounds=[-92.90, 47.32, -86.75, 42.48])
+
+# gdal.close(output)
 
 # idwFilePath = 'data/working/nitrate_interpolation_20200223155231204838397322666.tif'
 
