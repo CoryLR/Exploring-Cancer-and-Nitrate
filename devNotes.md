@@ -49,6 +49,7 @@ References
 - [Esri guide to interpreting OLS results](https://desktop.arcgis.com/en/arcmap/10.3/tools/spatial-statistics-toolbox/interpreting-ols-results.htm)
 - [Understanding Conda and Pip (Best quick guide I've found)](https://www.anaconda.com/understanding-conda-and-pip/)
 - [Deploy a Python (Dash) app to Heroku using Conda environments](https://stackoverflow.com/questions/47949173/deploy-a-python-dash-app-to-heroku-using-conda-environments-instead-of-virtua)
+- [YouTube Learn flask for python full tutorial](https://www.youtube.com/watch?v=Z1RJmh_OqeA)
 
 ## Important commands
 

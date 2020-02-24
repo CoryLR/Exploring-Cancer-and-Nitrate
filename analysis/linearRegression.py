@@ -1,8 +1,8 @@
-# This script allows the user to explore the relationship between nitrate concentration in water and cancer rate
-# PoC:  Cory Leigh Rahman
-#       University of Wisconsin-Madison
+#* This script allows the user to explore the relationship between nitrate concentration in water and cancer rate
+#* PoC:  Cory Leigh Rahman
+#*       University of Wisconsin-Madison
 
-# User inputs
+#* User inputs
 input_iwd_power = 1
 
 print()
@@ -29,13 +29,12 @@ Grid(idwFilePath,'data/working/well_nitrate.shp', algorithm=f'invdist:power={inp
 
 #* Get the average nitrate concentration per census tract using Zonal Statistics
 nitrateAndCancer_geoJson = zonal_stats("data/working/cancer_tracts.shp", idwFilePath, stats="mean", all_touched=True, geojson_out=True)
-nitrateAndCancer_geoDataFrame = GeoDataFrame(nitrateAndCancer_geoJson)
+nitrateAndCancer_geoDataFrame = GeoDataFrame.from_features(nitrateAndCancer_geoJson)
 
 #* Now that we have cancer rates and nitrate concentration aggregated to the same enumeration unit (census tract) we can compare them.
-# Get the appropriate attribute columns for regression (cancer rate and nitrate concentration)
-# ^ Done by getting values of a particular key in list of dictionaries using List Comprehension
-cancerRate_column_values = [ sub['canrate'] for sub in nitrateAndCancer_geoDataFrame['properties'] ]
-nitrateConcentration_column_values = [ sub['mean'] for sub in nitrateAndCancer_geoDataFrame['properties'] ]
+#* Get the appropriate attribute columns for regression (cancer rate and nitrate concentration)
+cancerRate_column_values = nitrateAndCancer_geoDataFrame["canrate"]
+nitrateConcentration_column_values = nitrateAndCancer_geoDataFrame["mean"]
 
 #* Get regression results
 Y = cancerRate_column_values
@@ -43,8 +42,23 @@ X = nitrateConcentration_column_values
 model = OLS(Y, X)
 results = model.fit()
 
-#* Display Results
-print(results.summary())
+#* Display Results for testing
+print("\n Summary:\n:", results.summary())
+print("\n Residuals:\n:", results.resid)
+
+#* Merge the residuals into the geodataframe
+nitrateAndCancer_geoDataFrame["residual"] = results.resid
+
+print("nitrateAndCancer_geoDataFrame:")
+print(nitrateAndCancer_geoDataFrame)
 
 #* Clean up temp files
 remove(idwFilePath)
+
+#* Make variables to send back to front end
+summaryString = results.summary()
+geoJson = nitrateAndCancer_geoDataFrame.to_json()
+
+print("geojson:")
+print(geoJson[0:500])
+
