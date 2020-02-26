@@ -55,6 +55,14 @@ References
 
 - [Bash] Saves conda dependencies: `conda env export > environment-linearRegression.py.yml`
 
+## Flask
+
+- Code is in `app.py`
+- Initialization steps:
+  - `export FLASK_APP=app.py`
+  - `flask run`
+- 
+
 ## Meetings
 
 2020-02-21 Call with Chris Scheele
