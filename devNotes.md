@@ -3,6 +3,22 @@
 
 Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](https://geography.wisc.edu/gis/onlinemasters/)
 
+## Front-end Angular
+
+- Get Flask to serve the Angular front-end:
+  - Build with a custom base href, copy index.html to `/templates`, and copy everything else to `/static`
+    - [/front-end-exploring-cancer-nitrate/] `ng build --base-href /static/ && cp -r dist/front-end-exploring-cancer-nitrate/. ../static && cp dist/front-end-exploring-cancer-nitrate/index.html ../templates`
+  - With the above command, we can run the app from root using `flask run`
+
+## Back-end Flask
+
+- Code is in `app.py`
+- Initialization steps:
+  - [/Exploring-Cancer-and-Nitrate/] `export FLASK_APP=app.py`
+  - [/Exploring-Cancer-and-Nitrate/] `flask run`
+- 
+
+
 ## Architecture Brainstorming
 
 The Stack
@@ -55,13 +71,6 @@ References
 
 - [Bash] Saves conda dependencies: `conda env export > environment-linearRegression.py.yml`
 
-## Flask
-
-- Code is in `app.py`
-- Initialization steps:
-  - `export FLASK_APP=app.py`
-  - `flask run`
-- 
 
 ## Meetings
 
