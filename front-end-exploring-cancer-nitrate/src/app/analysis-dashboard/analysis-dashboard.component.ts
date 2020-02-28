@@ -11,6 +11,12 @@ import { HttpClient } from '@angular/common/http';
 // @Injectable()
 export class AnalysisDashboardComponent implements OnInit {
 
+  model = {
+    left: true,
+    middle: false,
+    right: false
+  };
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
