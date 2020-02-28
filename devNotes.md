@@ -8,6 +8,7 @@ Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](
 - Get Flask to serve the Angular front-end:
   - Build with a custom base href, copy index.html to `/templates`, and copy everything else to `/static`
     - [/front-end-exploring-cancer-nitrate/] `ng build --base-href /static/ && cp -r dist/front-end-exploring-cancer-nitrate/. ../static && cp dist/front-end-exploring-cancer-nitrate/index.html ../templates`
+    - Shortcut: `npm run build` (assuming the package.json is updated)
   - With the above command, we can run the app from root using `flask run`
 
 ## Back-end Flask

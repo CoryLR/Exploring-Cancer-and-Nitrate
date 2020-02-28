@@ -4,7 +4,8 @@ from flask import request
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
+@app.route('/static', strict_slashes=False)
 def main():
     return render_template('index.html')
 
@@ -25,7 +26,8 @@ def analyze():
         #     response_data = "Unrecognized input"
 
         return {
-            'request': req_data
+            'request': req_data,
+            'serverData': "This string came from the back-end, can you see it in the front end?",
             # 'response': response_data
         }
     except Exception as e:
