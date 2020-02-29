@@ -1,17 +1,42 @@
-<p>Hello bright, wonderful world!</p>
-
-<div class=""></div>
-
-<div class="btn-group btn-group-toggle">
-  <label class="btn-primary" ngbButtonLabel>
-    <input type="checkbox" ngbButton [(ngModel)]="model.left"> Left (pre-checked)
-  </label>
-  <label class="btn-primary" ngbButtonLabel>
-    <input type="checkbox" ngbButton [(ngModel)]="model.middle"> Middle
-  </label>
-  <label class="btn-primary" ngbButtonLabel>
-    <input type="checkbox" ngbButton [(ngModel)]="model.right"> Right
-  </label>
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <h2 class="display-4">Nitrate, Water, and Cancer</h2>
+      <p class="lead">Explore the relationship yourself.</p>
+      <hr class="my-4">
+      <p>This app allows anyone to explore the relationship between cancer rates and nitrate concentration in Wisconsin water.</p>
+      <p>Cory Leigh Rahman, Master's in GIS & Web Map Programming, University of Wisconsin-Madison</p>
+      <p>March, 2020</p>
+    </div>
+  </div>
 </div>
-<hr>
-<pre>{{model | json}}</pre>
+<div class="container">
+  <div class="row">
+
+    <div class="col-12-xs">
+      <h3>Introduction</h3>
+      <p>The question we want to explore is: <strong>What is the relationship between Cancer Rate and Nitrate Concentration in Water?</strong></p>
+      <ul>
+        <li>Independent (Explanatory) Variable: Nitrate Concentration in Water</li>
+        <li>Dependent Variable: Cancer Rate</li>
+      </ul>
+      <p>Below are results of linear regression where we try to use nitrate concentration values to predict cancer rates in Wisconsin census tracts. The map shows cancer rate residuals (differences between predicted cancer rate and actual cancer rate), while the text box shows full regression diagnostics which can be used to determine statistical significance and prediction quality.</p>
+    </div>
+
+    <div class="col-12-xs map-wrapper">
+      <br><br>
+      <h3>Map of Residuals</h3>
+      <div id="residuals-map"></div>
+    </div>
+
+    <div class="col-12-xs">
+      <br><br>
+      <h3>Regression Results</h3>
+      <pre id="regression-results">{{regressionResultsString}}</pre>
+    </div>
+
+    <!-- Add space at the end of the page -->
+    <br><br><br><br><br><br><br><br>
+
+  </div>
+</div>

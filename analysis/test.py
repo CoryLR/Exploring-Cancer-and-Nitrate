@@ -1,23 +1,30 @@
 
-print("\nStarting Script")
 
-import geopandas as gp
+def testFunc():
+  print("Called!")
+def testFunc2():
+  def testFunc3():
+    testFunc2()
 
-df = gp.GeoDataFrame({'A': [0, 1, 2], 'B': [3, 4, 5]}, index=list('abc'))
-# s = gp.Series([6], index=[0])
-
-print(df)
-
-df['test'] = [6, 7, 8]
-
-print(df)
-print(type(df["A"]))
-
-print("\nScript Done\n")
-
-
+testFunc2()
 
 ## Code Graveyard
+
+# print("\nStarting Script")
+
+# import geopandas as gp
+
+# df = gp.GeoDataFrame({'A': [0, 1, 2], 'B': [3, 4, 5]}, index=list('abc'))
+# # s = gp.Series([6], index=[0])
+
+# print(df)
+
+# df['test'] = [6, 7, 8]
+
+# print(df)
+# print(type(df["A"]))
+
+# print("\nScript Done\n")
 
 # import rasterio
 

@@ -11,6 +11,10 @@ Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](
     - Shortcut: `npm run build` (assuming the package.json is updated)
   - With the above command, we can run the app from root using `flask run`
 
+Links:
+
+- Boilerplate: https://leafletjs.com/examples/choropleth/
+
 ## Back-end Flask
 
 - Code is in `app.py`
