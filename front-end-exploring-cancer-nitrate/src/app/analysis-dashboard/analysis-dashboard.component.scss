@@ -1,14 +1,46 @@
 
+$analysis-coordination-color: #278A00;
+
+h1, h2, h3, h4, h5, h6 {
+  display: block;
+  width: 100%;
+}
+
 .map-wrapper {
   width: 100%;
 }
 
 #residuals-map {
   width: 100%;
-  height: 500px;
+  height: 650px;
 }
 
 .jumbotron {
   padding-left: 0;
   padding-right: 0;
+}
+
+#img-analysis-flow-chart {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 900px;
+}
+#img-interpolation-parameters {
+  margin-left: auto;
+  margin-right: auto;
+  width: 220px;
+}
+
+.analysis-coordination-color {
+  color: $analysis-coordination-color;
+}
+
+.analysis-input-form {
+  .spinner-border {
+    margin-right: 0.2em;
+    margin-bottom: 0.1em;
+    width: 1em;
+    height: 1em;
+  }
 }

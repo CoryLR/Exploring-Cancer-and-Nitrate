@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="span12">
-        <h2 class="display-4">Nitrate, Water, and Cancer</h2>
-        <p class="lead">Explore the relationship yourself.</p>
+        <h2 class="display-4">Cancer and Nitrate in Drinking Water</h2>
+        <p class="lead">Explore the relationship yourself</p>
         <hr class="my-4">
         <!-- <p>This app allows anyone to explore the relationship between cancer rates and nitrate concentration in Wisconsin water.</p> -->
         <p>Cory Leigh Rahman, Master's in GIS & Web Map Programming, University of Wisconsin-Madison</p>
@@ -15,26 +15,86 @@
 
 <div class="container">
   <div class="row">
-
-    <div class="col-12-xs">
+    <div class="col-xs-12">
       <h3>Introduction</h3>
-      <p>The question we want to explore is: <strong>What is the relationship between Cancer Rate and Nitrate Concentration in Water?</strong></p>
+      <p>The question we want to explore is: <strong>Is there a relationship between Nitrate in drinking water and
+          Cancer?</strong></p>
       <ul>
-        <li>Independent (Explanatory) Variable: Nitrate Concentration in Water</li>
-        <li>Dependent Variable: Cancer Rate</li>
+        <li>Independent (Explanatory) Variable: <strong>Nitrate Concentration</strong> from water well samples</li>
+        <li>Dependent Variable: <strong>Cancer Rate</strong> from census tracts</li>
       </ul>
-      <p>Below are results of linear regression where we try to use nitrate concentration values to predict cancer rates in Wisconsin census tracts. The map shows cancer rate residuals (differences between predicted cancer rate and actual cancer rate), while the text box shows full regression diagnostics which can be used to determine statistical significance and prediction quality.</p>
     </div>
+    <h5>Methodology</h5>
+    <img class="img-fluid" id="img-analysis-flow-chart" src="/static/assets/images/analysis-flow-chart.png">
+    <ngb-accordion [closeOthers]="true" activeIds="">
+      <ngb-panel id="static-1" title="Full Explanation of Methodology and Flow Chart">
+        <ng-template ngbPanelContent>
+          This flow chart shows the process for our analysis. We start with two inputs: cancer rates from census tracts, and water samples from wells. In order to explore the relationship between these factors they must be in the same form. To get the data in the same form we interpolate the well samples and use zonal statistics to get the average nitrate concentration per census tract. Once both cancer rates and average nitrate concentration are averaged per census tract we can run a linear regression. The "R-squared" value of the regression results will tell us how much of the cancer rate could be explained by nitrate concentration in drinking water.
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+    <p><br>The green-colored steps (<span class="analysis-coordination-color font-weight-bold">Interpolation</span>, <span
+        class="analysis-coordination-color font-weight-bold">Residuals</span>, and <span
+        class="analysis-coordination-color font-weight-bold">Results</span>) are the steps we can interact with in this
+      app. You can set
+      the Interpolation parameters, run the full analysis, and explore the results.</p>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <br>
 
-    <div class="col-12-xs map-wrapper">
+      <h3>Do the Analysis</h3>
+
+      <h5>Set <span class="analysis-coordination-color">Interpolation</span> Parameters</h5>
+
+      <p>The most subjective part of this analysis is how to do the interpolation. The <strong>Power</strong>
+        (distance decay exponent) and <strong>Smoothing</strong> values affect how nitrate concentration is estimated
+        for
+        areas between water wells.</p>
+    </div>
+  </div>
+  <!-- <div class="row" style="width: 100%"> -->
+  <div class="row">
+    <div class="col-sm">
+      <form class="analysis-input-form">
+        <div class="form-group">
+          <label for="idw_power_input">Power</label>
+          <input [(ngModel)]="idw_power" step="0.1" name="idw_power" type="number" min="0" max="143" placeholder="Enter a number > 0"
+            class="form-control" id="idw_power_input" required>
+          <small id="emailHelp" class="form-text text-muted">Default: 2</small>
+          <small id="emailHelp" class="form-text text-muted">Also called <em>distance decay exponent</em></small>
+        </div>
+        <div class="form-group">
+          <label for="idw_smoothing_input">Smoothing</label>
+          <input [(ngModel)]="idw_smoothing" step="0.1" name="idw_smoothing" type="number" min="0" max="143" placeholder="Enter a number >= 0"
+            class="form-control" id="idw_smoothing_input" required>
+          <small id="emailHelp" class="form-text text-muted">Default: 1</small>
+        </div>
+        <!-- <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div> -->
+        <button (click)="runAnalysis()" [disabled]="waitingForResults" type="submit" class="btn btn-primary">
+          <span *ngIf="waitingForResults" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+          {{analysisCount < 1 ? "Run" : "Re-run"}} Analysis
+        </button>
+      </form>
+    </div>
+    <div class="col-sm">
+      <img id="img-interpolation-parameters" src="/static/assets/images/interpolation-parameters.png">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 map-wrapper">
       <br><br>
-      <h3>Map of Residuals</h3>
+      <h5>Map of Regression <span class="analysis-coordination-color">Residuals</span></h5>
       <div id="residuals-map"></div>
     </div>
 
-    <div class="col-12-xs">
+    <div class="col-xs-12">
       <br><br>
-      <h3>Regression Results Summary</h3>
+      <h5>Summary of Regression <span class="analysis-coordination-color">Results</span></h5>
       <pre id="regression-results">{{regressionResultsString}}</pre>
     </div>
 
