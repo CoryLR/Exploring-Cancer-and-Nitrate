@@ -13,7 +13,8 @@ Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](
 
 Links:
 
-- Boilerplate: https://leafletjs.com/examples/choropleth/
+- [Boilerplate](https://leafletjs.com/examples/choropleth/)
+- [GEOID can be input after "US" in this URL](https://censusreporter.org/profiles/14000US55037190100)
 
 ## Back-end Flask
 

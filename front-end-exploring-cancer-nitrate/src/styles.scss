@@ -17,7 +17,16 @@ body {
   div.card-header {
     height: 40px;
     padding: 0;
+
+    button {
+      color: black;
+    }
   }
+
+  .card-body {
+    text-align: justify;
+  }
+  
 }
 
 .info_control {
@@ -33,7 +42,7 @@ body {
   color: #777;
 }
 .info_control_hover {
-  width: 200px;
+  width: 260px;
 }
 .info_control_legend {
   line-height: 18px;

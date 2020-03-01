@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-analysis-dashboard',
@@ -16,9 +17,12 @@ export class AnalysisDashboardComponent implements OnInit {
   private regressionResultsString: string = "Run the analysis to see regression results.";
   private analysisCount: number = 0;
   private waitingForResults: boolean = false;
+  private analysisLog = 'Use the "Run Analysis" button.';
 
   private idw_power;
   private idw_smoothing;
+
+  private faInfoCircle = faInfoCircle;
 
 
   constructor(private http: HttpClient) { }
@@ -28,8 +32,6 @@ export class AnalysisDashboardComponent implements OnInit {
   }
 
   runAnalysis = () => {
-    console.log("this.idw_power\n", this.idw_power)
-    console.log("this.idw_smoothing\n", this.idw_smoothing)
     if (!Number.isNaN(this.idw_power) && !Number.isNaN(this.idw_smoothing) && this.idw_power > 0 && this.idw_smoothing >= 0) {
       this.startAnalysis_updateData(this.idw_power, this.idw_smoothing)
     } else {
@@ -60,21 +62,26 @@ export class AnalysisDashboardComponent implements OnInit {
       return this._div;
     };
 
+    let self = this;
     // method that we will use to update the control based on feature properties passed
     this.infoBoxControl.update = function (props) {
-      let residual, cancerRate, nitrateConcentration;
+      let residual, cancerRate, cancerRateEstimate, nitrateConcentration;
       if (props) {
-        residual = Number.parseFloat(props.residual).toPrecision(3);
-        cancerRate = Number.parseFloat(props.canrate).toPrecision(2);
-        nitrateConcentration = Number.parseFloat(props.mean).toPrecision(3);
+        cancerRate = Number.parseFloat(props.canrate).toFixed(2);
+        cancerRateEstimate = Number.parseFloat(props.canrate + props.residual).toFixed(3)
+        residual = Number.parseFloat(props.residual).toFixed(3);
+        nitrateConcentration = Number.parseFloat(props.mean).toFixed(2);
       }
       this._div.innerHTML = '<h5>Census Tracts</h5>' + (props ?
         `
-            <strong>Residual</strong>: ${residual}
-            <br>Cancer Rate: ${cancerRate}
-            <br>Nitrate Concentration: ${nitrateConcentration}
-            `
-        : 'Hover over a census tract');
+        <ul style="padding-left: 1.2em; margin-bottom: 0.5em;">
+        <li>Actual Cancer Rate: <strong>${cancerRate}</strong>%</li>
+        <li>Estimated Cancer Rate: <strong>${cancerRateEstimate}</strong>%</li>
+        <li><strong>Residual: </strong><strong>${residual}%</strong></li>
+        </ul>
+        <em>(Cancer rate estimated based on Nitrate Concentration of <strong>${nitrateConcentration}</strong> ppm)</em>
+        `
+        : self.analysisCount < 1 ? 'Run the analysis to see census tracts' : 'Hover over a census tract');
     };
 
     this.infoBoxControl.addTo(this.map);
@@ -85,31 +92,26 @@ export class AnalysisDashboardComponent implements OnInit {
 
       var div = L.DomUtil.create('div', 'info_control info_control_legend'),
         // grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-        midGrades = [0.3, 0.2, 0.1, 0, -0.1, -0.2, -0.3],
+        // midGrades = [0.3, 0.2, 0.1, 0, -0.1, -0.2, -0.3],
+        midGrades = [0.4, 0.2, 0, -0.2, -0.4],
         labels = [];
-      
-      div.innerHTML += `<i style="background: ${this.getResidualColor(0.4)}"></i> > 0.3<br>`
+
+      div.innerHTML += `<i style="background: ${this.getResidualColor(0.5)}"></i> > 0.4<br>`
       // loop through our density intervals and generate a label with a colored square for each interval
-      for (var i = 0; i < midGrades.length -1; i++) {
-        div.innerHTML += `<i style="background: ${this.getResidualColor(midGrades[i] - 0.01)}"></i> ${midGrades[i]} - ${midGrades[i+1]}<br>`
+      for (var i = 0; i < midGrades.length - 1; i++) {
+        div.innerHTML += `<i style="background: ${this.getResidualColor(midGrades[i] - 0.01)}"></i> ${midGrades[i]} - ${midGrades[i + 1]}<br>`
       }
-      div.innerHTML += `<i style="background: ${this.getResidualColor(-0.4)}"></i> < -0.3<br>`
+      div.innerHTML += `<i style="background: ${this.getResidualColor(-0.5)}"></i> < -0.4<br>`
 
       return div;
     };
 
     legend.addTo(this.map);
-
-
-    /* Useful for testing map position */
-    setInterval(() => {
-      console.log("map center: ", this.map.getCenter());
-    }, 5000)
-
   }
 
   startAnalysis_updateData = (distanceDecayExponent: any = "2", smoothing: any = "0") => {
     this.waitingForResults = true;
+    this.userLog(`\n\nRunning Analysis... `);
     const url = '/analyze';
     const body = { 'distanceDecayExponent': String(distanceDecayExponent), 'smoothing': String(smoothing) };
     this.http.post(url, body).subscribe((data: any) => {
@@ -126,7 +128,8 @@ export class AnalysisDashboardComponent implements OnInit {
       this.map.addLayer(this.residualsGeoJson);
       this.analysisCount += 1;
       this.waitingForResults = false;
-      console.log("this.residualsGeoJson:\n", this.residualsGeoJson)
+      this.infoBoxControl.update();
+      this.userLog(`Done!\nInputs Used: Power:${this.idw_power} Smoothing:${this.idw_smoothing}`);
     });
   }
 
@@ -142,15 +145,12 @@ export class AnalysisDashboardComponent implements OnInit {
   }
 
   getResidualColor = (d) => {
-    return d < -100 ? 'black'
-      : d < -0.30 ? '#8c510a'
-        : d < -0.20 ? '#bf812d'
-          : d < -0.10 ? '#dfc27d'
-            : d < 0.00 ? '#f6e8c3'
-              : d < 0.10 ? '#c7eae5'
-                : d < 0.20 ? '#80cdc1'
-                  : d < 0.30 ? '#35978f'
-                    : '#01665e';
+    return d < -0.40 ? '#8c510a'
+      : d < -0.20 ? '#d8b365'
+        : d < 0.00 ? '#f6e8c3'
+          : d < 0.20 ? '#c7eae5'
+            : d < 0.40 ? '#5ab4ac'
+              : '#01665e';
   }
 
   highlightFeature = (e) => {
@@ -180,6 +180,14 @@ export class AnalysisDashboardComponent implements OnInit {
       mouseout: this.resetHighlight,
       // click: zoomToFeature
     });
+  }
+
+  userLog = (message) => {
+    this.analysisLog += String(message);
+    setTimeout(() => {
+      let logWrapperElement = document.querySelector('#analysis-log .log-wrapper');
+      logWrapperElement.scrollTop = logWrapperElement.scrollHeight;
+    }, 50);
   }
 
 

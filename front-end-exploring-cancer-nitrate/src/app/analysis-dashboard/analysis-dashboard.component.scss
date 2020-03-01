@@ -10,6 +10,15 @@ h5 {
   margin-top: 15px;
 }
 
+p {
+  text-align: justify;
+}
+
+.col-xs-12 {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 .map-column {
   // width: 100%;
 }
@@ -50,6 +59,21 @@ h5 {
     height: 1em;
   }
 }
+
+#analysis-log {
+  
+  .log-wrapper {
+    height: 280px;
+    overflow-y: scroll;
+    background-color: lightgray;
+    padding: 10px;
+    pre {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
 .regression-results-column {
   overflow-x: hidden;
 
