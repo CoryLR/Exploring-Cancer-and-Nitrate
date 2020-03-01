@@ -6,8 +6,12 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-.map-wrapper {
-  width: 100%;
+h5 {
+  margin-top: 15px;
+}
+
+.map-column {
+  // width: 100%;
 }
 
 #residuals-map {
@@ -25,11 +29,13 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: auto;
   width: 100%;
   max-width: 900px;
+  height: auto;
 }
 #img-interpolation-parameters {
   margin-left: auto;
   margin-right: auto;
-  width: 220px;
+  width: 250px;
+  height: auto;
 }
 
 .analysis-coordination-color {
@@ -42,5 +48,27 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.1em;
     width: 1em;
     height: 1em;
+  }
+}
+.regression-results-column {
+  overflow-x: hidden;
+
+  .regression-results-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px;
+    background-color: lightgray;
+    width: 100%;
+    @media (max-width: 1199.98px) {
+      height: 550px;
+    }
+    @media (min-width: 1199.98px) {
+        height: 650px;
+        font-size: 11px;
+    }
+
+    pre#regression-results {
+      height: 530px;
+    }
   }
 }

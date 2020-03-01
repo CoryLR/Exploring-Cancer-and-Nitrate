@@ -55,7 +55,7 @@
   </div>
   <!-- <div class="row" style="width: 100%"> -->
   <div class="row">
-    <div class="col-sm">
+    <div class="col-sm-4">
       <form class="analysis-input-form">
         <div class="form-group">
           <label for="idw_power_input">Power</label>
@@ -76,30 +76,33 @@
         </div> -->
         <button (click)="runAnalysis()" [disabled]="waitingForResults" type="submit" class="btn btn-primary">
           <span *ngIf="waitingForResults" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
-          {{analysisCount < 1 ? "Run" : "Re-run"}} Analysis
+          {{waitingForResults ? "Running Analysis..." : analysisCount < 1 ? "Run Analysis" : "Re-run Analysis"}}
         </button>
       </form>
     </div>
-    <div class="col-sm">
+    <div class="col-sm-8">
       <img id="img-interpolation-parameters" src="/static/assets/images/interpolation-parameters.png">
     </div>
   </div>
 
   <div class="row">
-    <div class="col-xs-12 map-wrapper">
+    <div class="col-xl-6 map-column">
       <br><br>
       <h5>Map of Regression <span class="analysis-coordination-color">Residuals</span></h5>
       <div id="residuals-map"></div>
     </div>
 
-    <div class="col-xs-12">
-      <br><br>
+    <div class="col-xl-6 regression-results-column">
       <h5>Summary of Regression <span class="analysis-coordination-color">Results</span></h5>
-      <pre id="regression-results">{{regressionResultsString}}</pre>
+      <div class="regression-results-wrapper">
+        <pre id="regression-results">{{regressionResultsString}}</pre>
+      </div>
     </div>
 
     <!-- Add space at the end of the page -->
-    <br><br><br><br><br><br><br><br>
+    <div class="col-xs-12">
+      <br><br>
+    </div>
 
   </div>
 </div>
