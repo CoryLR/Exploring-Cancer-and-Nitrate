@@ -190,5 +190,22 @@ export class AnalysisDashboardComponent implements OnInit {
     }, 50);
   }
 
+  promptGeoJsonDownload = () => {
+    this.promptDownload("Residuals-Cancer-Nitrate.geojson", JSON.stringify(this.residualsGeoJson.toGeoJSON()));
+  }
+
+  promptDownload = (filename, text) => {
+    let element = document.createElement('a');
+    element.setAttribute('href', URL.createObjectURL(new Blob([text], {
+      type: "application/octet-stream"
+    })));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    setTimeout(function () {
+      document.body.removeChild(element);
+    }, 1000);
+  }
 
 }

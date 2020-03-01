@@ -115,6 +115,7 @@
         <br>
       </div>
       <div id="residuals-map"></div>
+      <button id="geojson_download_button" (click)='promptGeoJsonDownload()' *ngIf="analysisCount > 0" class="btn btn-secondary" title="Download this GeoJSON">&#10515;</button>
     </div>
 
     <div class="col-xl-6 regression-results-column">
