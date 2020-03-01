@@ -30,11 +30,11 @@
       <ngb-accordion [closeOthers]="true" activeIds="">
         <ngb-panel id="accordion-methodology" title="&#9432; Explanation of Methodology and Flow Chart">
           <ng-template ngbPanelContent>
-            This flow chart shows the process for our analysis. We start with two inputs: cancer rates from census
-            tracts, and water samples from wells (data from 2016). In order to explore the relationship between these
-            factors they must be in the same form. To get the data in the same form we interpolate the well samples and
-            use zonal statistics to get the average nitrate concentration per census tract. Once both cancer rates and
-            average nitrate concentration are averaged per census tract we can run a linear regression. The "R-squared"
+            This flow chart shows the process for our analysis. We start with two <strong>inputs</strong>: cancer rates from census
+            tracts, and nitrate concentrations from well water samples (both from 2016). In order to explore the relationship between these
+            factors they must be in the same form. To get the data in the same form we <strong>interpolate</strong> the well samples and
+            use <strong>zonal statistics</strong> to get the average nitrate concentration per census tract. Once both cancer rates and
+            average nitrate concentration are averaged per census tract we can run a <strong>linear regression</strong>. The "R-squared"
             value of the regression results will tell us how much of the cancer rate could be explained by nitrate
             concentration in drinking water.
           </ng-template>
@@ -127,7 +127,7 @@
             <ng-template ngbPanelContent>
               The regression summary tells us 1) What the R-Squared value is, and 2) if we can trust the R-Squared
               value. An R-Squared value of 0.20, for example, would suggest that nitrate in drinking water could explain
-              20% of the cancer rate. The other statistics tell us if the R-Squared can be trusted.
+              20% of the cancer rate. The other statistics tell us if the R-Squared value can be trusted.
             </ng-template>
           </ngb-panel>
         </ngb-accordion>

@@ -147,7 +147,7 @@ export class AnalysisDashboardComponent implements OnInit {
   getResidualColor = (d) => {
     return d < -0.40 ? '#8c510a'
       : d < -0.20 ? '#d8b365'
-        : d < 0.00 ? '#f6e8c3'
+        : d < 0.00 ? '#f2e9da'
           : d < 0.20 ? '#c7eae5'
             : d < 0.40 ? '#5ab4ac'
               : '#01665e';

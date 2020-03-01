@@ -1,5 +1,6 @@
 
 $analysis-coordination-color: #278A00;
+$medium-background-color: #ede6da;
 
 h1, h2, h3, h4, h5, h6 {
   display: block;
@@ -29,6 +30,7 @@ p {
 }
 
 .jumbotron {
+  background-color: $medium-background-color;
   padding-left: 0;
   padding-right: 0;
 }
@@ -65,7 +67,7 @@ p {
   .log-wrapper {
     height: 280px;
     overflow-y: scroll;
-    background-color: lightgray;
+    background-color: $medium-background-color;
     padding: 10px;
     pre {
       width: 100%;
@@ -81,7 +83,7 @@ p {
     overflow-x: auto;
     overflow-y: hidden;
     padding: 10px;
-    background-color: lightgray;
+    background-color: $medium-background-color;
     width: 100%;
     @media (max-width: 1199.98px) {
       height: 550px;

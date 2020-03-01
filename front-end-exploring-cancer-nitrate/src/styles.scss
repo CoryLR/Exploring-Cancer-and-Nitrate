@@ -3,6 +3,14 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import "~leaflet/dist/leaflet.css";
 
+$analysis-coordination-color: #278A00;
+$light-background-color: #fffbf5;
+$medium-background-color: #ede6da;
+
+html, body {
+  background-color: $light-background-color;
+}
+
 body {
   height: 100%;
   width: 100%;
@@ -17,6 +25,7 @@ body {
   div.card-header {
     height: 40px;
     padding: 0;
+    background-color: darken($light-background-color, 3%);
 
     button {
       color: black;
