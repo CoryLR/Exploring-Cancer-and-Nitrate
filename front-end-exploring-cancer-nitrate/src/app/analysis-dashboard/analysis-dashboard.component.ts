@@ -96,12 +96,12 @@ export class AnalysisDashboardComponent implements OnInit {
         midGrades = [0.4, 0.2, 0, -0.2, -0.4],
         labels = [];
 
-      div.innerHTML += `<i style="background: ${this.getResidualColor(0.5)}"></i> > 0.4<br>`
+      div.innerHTML += `<div><i style="background: ${this.getResidualColor(0.5)}"></i> > 0.4</div>`
       // loop through our density intervals and generate a label with a colored square for each interval
       for (var i = 0; i < midGrades.length - 1; i++) {
-        div.innerHTML += `<i style="background: ${this.getResidualColor(midGrades[i] - 0.01)}"></i> ${midGrades[i]} - ${midGrades[i + 1]}<br>`
+        div.innerHTML += `<div><i style="background: ${this.getResidualColor(midGrades[i] - 0.01)}"></i> ${midGrades[i]} - ${midGrades[i + 1]}</div>`
       }
-      div.innerHTML += `<i style="background: ${this.getResidualColor(-0.5)}"></i> < -0.4<br>`
+      div.innerHTML += `<div><i style="background: ${this.getResidualColor(-0.5)}"></i> < -0.4</div>`
 
       return div;
     };

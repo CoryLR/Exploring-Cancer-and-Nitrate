@@ -15,48 +15,50 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <h3>Introduction</h3>
-      <p>The question we want to explore is: <strong>Is there a relationship between Nitrate in drinking water and
-          Cancer?</strong></p>
+      <h2>Introduction</h2>
+      <p>Nitrate is a contaminant which can get into your drinking water supply because of fertilizers and other waste<sup><a href="https://www.doh.wa.gov/Portals/1/Documents/Pubs/331-214.pdf">Source</a></sup>. We can use data from Wisconsin to help figure out an important question: <strong>What is the relationship between Nitrate in drinking water and Cancer?</strong></p>
+    </div>
+    <div class="col-xs-12">
+      <h4>Methodology</h4>
+      <p>To see how nitrate and cancer are related we will run linear regression on state-wide data from Wisconsin. Results of the regression could tell us how much of the cancer rate can be explained by nitrate concentration in drinking water.</p>
       <ul>
         <li>Independent (Explanatory) Variable: <strong>Nitrate Concentration</strong> from water well samples
           <em>(parts per million)</em></li>
         <li>Dependent Variable: <strong>Cancer Rate</strong> from census tracts <em>(percentage of population)</em></li>
       </ul>
-    </div>
-    <div class="col-xs-12">
-      <h5>Methodology</h5>
       <img class="img-fluid" id="img-analysis-flow-chart" src="/static/assets/images/analysis-flow-chart.png">
-      <ngb-accordion [closeOthers]="true" activeIds="">
-        <ngb-panel id="accordion-methodology" title="&#9432; Explanation of Methodology and Flow Chart">
-          <ng-template ngbPanelContent>
-            This flow chart shows the process for our analysis. We start with two <strong>inputs</strong>: cancer rates from census
-            tracts, and nitrate concentrations from well water samples (both from 2016). In order to explore the relationship between these
-            factors they must be in the same form. To get the data in the same form we <strong>interpolate</strong> the well samples and
-            use <strong>zonal statistics</strong> to get the average nitrate concentration per census tract. Once both cancer rates and
-            average nitrate concentration are averaged per census tract we can run a <strong>linear regression</strong>. The "R-squared"
-            value of the regression results will tell us how much of the cancer rate could be explained by nitrate
-            concentration in drinking water.
-          </ng-template>
-        </ngb-panel>
-      </ngb-accordion>
       <p><br>The green-colored steps (<span class="analysis-coordination-color font-weight-bold">Interpolation</span>,
         <span class="analysis-coordination-color font-weight-bold">Residuals</span>, and <span
           class="analysis-coordination-color font-weight-bold">Results</span>) are the steps we can interact with in
         this
         app. The rest is done automatically for you. You can set
         the Interpolation parameters, run the full analysis, and explore the results.</p>
+        <ngb-accordion [closeOthers]="true" activeIds="">
+          <ngb-panel id="accordion-methodology" title="&#9432; Further Explanation of Methodology and Flow Chart">
+            <ng-template ngbPanelContent>
+              This flow chart shows the process for our analysis. We start with two <strong>inputs</strong>: cancer rates from census
+              tracts, and nitrate concentrations from well water samples (both from 2016). In order to explore the relationship between these
+              factors they must be in the same form. To get the data in the same form we <strong>interpolate</strong> the well samples and
+              use <strong>zonal statistics</strong> to get the average nitrate concentration per census tract. Once both cancer rates and
+              average nitrate concentration are averaged per census tract we can run a <strong>linear regression</strong>. The R-squared
+              value of the regression results will tell us how much of the cancer rate could be explained by nitrate
+              concentration in drinking water. For example, an R-Squared value of 0.20 would suggest that nitrate in drinking water can explain 20% of the cancer rate.
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>  
+        <br>
+        <br>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
       <br>
-      <h3>Analysis</h3>
+      <h2>Analysis</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12 col-lg-4">
-      <h5><span class="analysis-coordination-color">Interpolation</span> Parameters</h5>
+      <h4><span class="analysis-coordination-color">Interpolation</span> Parameters</h4>
       <p>The most subjective part of this analysis is how to do the interpolation. The <strong>Power</strong>
         (distance decay exponent) and <strong>Smoothing</strong> values affect how nitrate concentration is estimated
         for
@@ -64,7 +66,7 @@
       <img id="img-interpolation-parameters" src="/static/assets/images/interpolation-parameters.png">
     </div>
     <div class="col-sm-5 col-lg-4">
-      <h5>Run the Analysis</h5>
+      <h4>Run the Analysis</h4>
       <form class="analysis-input-form">
         <div class="form-group">
           <label for="idw_power_input">Power</label>
@@ -91,7 +93,7 @@
       </form>
     </div>
     <div class="col-sm-7 col-lg-4" id="analysis-log">
-      <h5>Log</h5>
+      <h4>Log</h4>
       <div class="log-wrapper">
         <pre>{{analysisLog}}</pre>
       </div>
@@ -102,40 +104,44 @@
     <div class="col-xl-6 map-column">
       <div id="residuals-map-intro">
         <br>
-        <h5>Map of Regression <span class="analysis-coordination-color">Residuals</span></h5>
-        <ngb-accordion [closeOthers]="true" activeIds="">
-          <ngb-panel id="accordion-residuals-map" title="&#9432; Explanation of Residuals Map">
-            <ng-template ngbPanelContent>
-              Using linear regression we can guess what the cancer rate will be in any given census tract based only on
-              the nitrate concentration in water there. This map displays the difference (i.e.
-              <strong>residual</strong>) between our guesses and the actual cancer rates in each tract.
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
-        <br>
+        <h4>Map of Regression <span class="analysis-coordination-color">Residuals</span></h4>
+        <p>This map shows where our model over and under predicted.</p>
       </div>
-      <div id="residuals-map"></div>
-      <button id="geojson_download_button" (click)='promptGeoJsonDownload()' *ngIf="analysisCount > 0" class="btn btn-secondary" title="Download this GeoJSON">&#10515;</button>
+      <div style="position: relative">
+        <div id="residuals-map"></div>
+        <button id="geojson_download_button" (click)='promptGeoJsonDownload()' *ngIf="analysisCount > 0" class="btn btn-secondary" title="Download this GeoJSON">&#10515;</button>
+      </div>
+      <br>
+      <ngb-accordion [closeOthers]="true" activeIds="">
+        <ngb-panel id="accordion-residuals-map" title="&#9432; Further Explanation of Residuals Map">
+          <ng-template ngbPanelContent>
+            Using linear regression we can guess what the cancer rate will be in any given census tract based only on
+            the nitrate concentration in water there. This map displays the difference (i.e.
+            <strong>residual</strong>) between our guesses and the actual cancer rates in each tract.
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
     </div>
 
     <div class="col-xl-6 regression-results-column">
       <div id="regression-results-intro">
         <br>
-        <h5>Summary of Regression <span class="analysis-coordination-color">Results</span></h5>
-        <ngb-accordion [closeOthers]="true" activeIds="">
-          <ngb-panel id="accordion-regression-results" title="&#9432; Explanation of Regression Summary">
-            <ng-template ngbPanelContent>
-              The regression summary tells us 1) What the R-Squared value is, and 2) if we can trust the R-Squared
-              value. An R-Squared value of 0.20, for example, would suggest that nitrate in drinking water could explain
-              20% of the cancer rate. The other statistics tell us if the R-Squared value can be trusted.
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
-        <br>
+        <h4>Summary of Regression <span class="analysis-coordination-color">Results</span></h4>
+        <p>These results tell us how much nitrate can help explain cancer rates. </p>
       </div>
       <div class="regression-results-wrapper">
         <pre id="regression-results">{{regressionResultsString}}</pre>
       </div>
+      <br>
+      <ngb-accordion [closeOthers]="true" activeIds="">
+        <ngb-panel id="accordion-regression-results" title="&#9432; Further Explanation of Regression Summary">
+          <ng-template ngbPanelContent>
+            The regression summary tells us 1) What the R-Squared value is, and 2) if we can trust the R-Squared
+            value. An R-Squared value of 0.20, for example, would suggest that nitrate in drinking water could explain
+            20% of the cancer rate. The other statistics tell us if the R-Squared value can be trusted.
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
     </div>
 
     <!-- Add space at the end of the page -->

@@ -25,7 +25,7 @@ body {
   div.card-header {
     height: 40px;
     padding: 0;
-    background-color: darken($light-background-color, 3%);
+    background-color: darken($light-background-color, 1.5%);
 
     button {
       color: black;
@@ -52,6 +52,9 @@ body {
 }
 .info_control_hover {
   width: 260px;
+}
+.leaflet-bottom.leaflet-left {
+  margin-bottom: 20px;
 }
 .info_control_legend {
   line-height: 18px;
