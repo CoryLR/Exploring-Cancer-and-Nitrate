@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Building an App to Explore Cancer and Nitrate</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="building-an-app-to-explore-cancer-and-nitrate">Building an App to Explore Cancer and Nitrate</h1>
+<p><strong>Project 1 Report</strong></p>
+<p>2020-02-23</p>
+<p>Cory Leigh Rahman, University of Wisconsin-Madison, Master's in GIS &amp; Web Map Programming, GEOG 777: Capstone in GIS Development</p>
+<h1 id="introduction">Introduction</h1>
+<p>Nitrate is a contaminant which can get into your drinking water supply because of fertilizers and other waste. Data from Wisconsin can be used to help figure out what the relationship is between nitrate in drinking water and cancer.</p>
+<h2 id="methodology">Methodology</h2>
+<p>To see how nitrate and cancer are related, linear regression was run on state-wide data from Wisconsin. Results of the regression could reveal how much of the cancer rate can be explained by nitrate concentration in drinking water.</p>
+<ul>
+<li>Independent (Explanatory) Variable: <strong>Nitrate Concentration</strong> from water well samples (parts per million)</li>
+<li>Dependent Variable: <strong>Cancer Rate</strong> from census tracts (percentage of population)</li>
+</ul>
+<p><img src="file:////Users/clr/code/Exploring-Cancer-and-Nitrate/dev-journal/2020-03-01-Project-1-Report/images/analysis-flow-chart.png#w70" alt="Analysis Flow Chart"></p>
+<p>The green-colored steps (<strong>Interpolation</strong>, <strong>Residuals</strong>, and <strong>Results</strong>) are the steps the end-user can interact with. The rest is done automatically by the back-end server in Python. End-users can set the Interpolation parameters, run the full analysis, and explore the results.</p>
+<p>The flow chart visualizes the process of the analysis. The analysis starts with two inputs from 2016: cancer rates from census tracts, and nitrate concentrations from well water samples. In order to explore the relationship between these factors they must be in the same form. To get the data in the same form, the well samples were interpolated and zonal statistics were used to get the average nitrate concentration per census tract. Once both cancer rates and average nitrate concentration were averaged per census tract, finally linear regression could be run on the data.</p>
+<h1 id="implementation">Implementation</h1>
+<p>A web application was built to automate the analysis and allow users to explore the results.</p>
+<h2 id="technologies-used">Technologies Used</h2>
+<p><strong>Back-end (Server-Side) Technologies Used:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Description</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flask</td>
+<td>Python Web Framework</td>
+<td>Server code &amp; API</td>
+</tr>
+<tr>
+<td>Anaconda</td>
+<td>Data Science Platform, Package Manager</td>
+<td>Managing tools / dependencies</td>
+</tr>
+<tr>
+<td>GDAL</td>
+<td>Geospatial Data Abstraction Library</td>
+<td>IDW Interpolation of water wells</td>
+</tr>
+<tr>
+<td>rasterstats</td>
+<td>Raster Statistics Library</td>
+<td>Zonal statistics</td>
+</tr>
+<tr>
+<td>GeoPandas</td>
+<td>Geospatial Data Python Library</td>
+<td>Working with GeoJSON, organizing data</td>
+</tr>
+<tr>
+<td>statsmodels</td>
+<td>Statistics Library</td>
+<td>Ordinary least-squares (OLS) regression</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Front-end (Client-side) Technologies Used:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Description</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Angular</td>
+<td>JavaScript Front-End Web Framework</td>
+<td>Code organization, TypeScript support, data binding, and built-in tools</td>
+</tr>
+<tr>
+<td>NPM</td>
+<td>Package Manager</td>
+<td>Managing tools / dependencies</td>
+</tr>
+<tr>
+<td>Leaflet</td>
+<td>JavaScript Mapping Library</td>
+<td>Displaying regression residuals on a map</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td>Front-end UI Component Library</td>
+<td>Page layout, input and button styling</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other Technologies</strong></p>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Description</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VS Code</td>
+<td>Microsoft Visual Studio Code IDE / Text Editor</td>
+<td>Writing all code</td>
+</tr>
+<tr>
+<td><a href="http://colorbrewer2.org">colorbrewer2.org</a></td>
+<td>Map Symbology Color Picker</td>
+<td>Map color scheme</td>
+</tr>
+<tr>
+<td>Sketch</td>
+<td>Vector Graphics Design Software</td>
+<td>Creating the flow chart graphic and IDW parameters graphic</td>
+</tr>
+</tbody>
+</table>
+<h2 id="back-end-analysis-automation">Back-end Analysis Automation</h2>
+<p>The back-end is entirely written in Python and can be found in <code>app.py</code>. Through Flask, a simple API was written which accepts an HTTP request to <code>/analyze</code> with parameters.</p>
+<pre><code class="language-python"><div>...
+<span class="hljs-meta">@app.route('/', strict_slashes=False)</span>
+<span class="hljs-meta">@app.route('/static', strict_slashes=False)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'index.html'</span>)
+
+<span class="hljs-meta">@app.route('/analyze', methods=['POST'])</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">analyze</span><span class="hljs-params">()</span>:</span>
+    ...
+</div></code></pre>
+<p>Once the request is received, the following actions are taken:</p>
+<ol>
+<li>Get user inputs (Power and Smoothing for IDW)</li>
+<li>Perform the IDW interpolation on water well data</li>
+<li>Get the average nitrate concentration per census tract using Zonal Statistics</li>
+<li>Organize the appropriate attribute data for regression (cancer rate and nitrate concentration)</li>
+<li>Perform the regression analysis</li>
+<li>Merge the residuals back into the dataset</li>
+<li>Return two items: a) Regression results summary text, b) GeoJSON of residuals</li>
+</ol>
+<h2 id="front-end-interaction-and-design">Front-end Interaction and Design</h2>
+<p><img src="file:////Users/clr/code/Exploring-Cancer-and-Nitrate/dev-journal/2020-03-01-Project-1-Report/images/ui-jumbotron.png#w70" alt="User Interface Jumbotron"></p>
+<p>The end-user is guided through the problem and shown how to explore it. The interface is split up into two main sections:</p>
+<ol>
+<li>Introduction</li>
+<li>Analysis</li>
+</ol>
+<p>The Introduction section explains how nitrate gets in water and prompts the end-user with the question of how nitrate and cancer are related. The previously seen Analysis Flow Chart graphic is displayed for the end-user here, along with optional supplementary information.</p>
+<p><img src="file:////Users/clr/code/Exploring-Cancer-and-Nitrate/dev-journal/2020-03-01-Project-1-Report/images/ui-introduction-small.png#w70" alt="User Interface Introduction Section"></p>
+<p>The Analysis section provides interfaces for the inputs and results. Because the most subjective part of this analysis is the IDW (inverse distance weighted) interpolation, the end-user is allowed to input their own values for the Power (distance decay exponent) and Smoothing values. After the end-user selects their IDW inputs and runs the tool, they are presented with a map of residuals from the regression alongside a full regression summary.</p>
+<p><img src="file:////Users/clr/code/Exploring-Cancer-and-Nitrate/dev-journal/2020-03-01-Project-1-Report/images/ui-analysis-small.png#w70" alt="User Interface Analysis Section"></p>
+<p>The code for the front-end can be found in the folder <code>front-end-exploring-cancer-nitrate/</code></p>
+<h1 id="conclusions-from-analysis">Conclusions from Analysis</h1>
+<p>After experimenting with multiple IDW inputs, the highest R-Squared value received was using the default values of &quot;<code>2</code>&quot; for the distance decay exponent and &quot;<code>1</code>&quot; for the Smoothing value. These inputs yielded the following results:</p>
+<p><img src="file:////Users/clr/code/Exploring-Cancer-and-Nitrate/dev-journal/2020-03-01-Project-1-Report/images/regression-results-small.png" alt="Regression Results"></p>
+<h2 id="map-of-residuals">Map of Residuals</h2>
+<p>Using linear regression, the cancer rate can be estimated per census tract based only on the average nitrate concentration in water there. The map displays the difference (i.e. residual) between regression estimations and the actual cancer rates in each tract.</p>
+<p>The residuals seem to be somewhat clustered around urban areas, but otherwise relatively random. With only one explanatory variable (nitrate concentration), it is not expected for the residuals to be completely random, as other explanations for cancer rates are certainly being missed.</p>
+<h2 id="regression-results">Regression Results</h2>
+<p>The regression summary tells us two important things:</p>
+<ol>
+<li>What the R-Squared value is</li>
+<li>If we can trust the R-Squared value</li>
+</ol>
+<p>The R-Squared value this analysis received was 0.32, suggesting that nitrate concentration in water can explain 32% of the cancer rate per census tract as long as the R-Squared value is trustworthy.</p>
+<p>The other factors in the regression summary reveal that the R-Squared value is trustworthy. Because the P value (Prob F Statistic) is close to zero, and the F-statistic value is really large, we can reject the null hypothesis; this proves that there is a linear relationship between the independent and dependant variables. For the &quot;mean&quot; variable (mean nitrate concentration), given a large t-value (25.676) and a P-value close to zero, the null hypothesis can again be rejected, proving that nitrate concentration is significant in the prediction of cancer rate.</p>
+<p>Given the statistical significance of the regression model, the results show that <strong>nitrate concentration in well water can explain 32% of the cancer rate in Wisconsin</strong>.</p>
+<style>
+  img[src*='#w70'] {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+</style>
+    </body>
+    </html>
