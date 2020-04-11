@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-analysis-dashboard',
@@ -21,9 +20,6 @@ export class AnalysisDashboardComponent implements OnInit {
 
   private idw_power;
   private idw_smoothing;
-
-  private faInfoCircle = faInfoCircle;
-
 
   constructor(private http: HttpClient) { }
 

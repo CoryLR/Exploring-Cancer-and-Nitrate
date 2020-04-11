@@ -3,6 +3,15 @@
 
 Lab 1, GEOG 777: Capstone in GIS Development, [University of Wisconsin-Madison](https://geography.wisc.edu/gis/onlinemasters/)
 
+## Continuous Development
+
+- Run the app with Flask:
+  - `conda activate geog777-lab1` (Note: this can be created using the environment.yml)
+  - `flask run` to start local server hosting the "static" and "templates" folders
+  - To update the front-end code:
+    - `cd front-end-exploring-cancer-nitrate`
+    - `npm run build` alias for building front-end into Flask's serving folders
+
 ## Front-end Angular
 
 - Get Flask to serve the Angular front-end:
