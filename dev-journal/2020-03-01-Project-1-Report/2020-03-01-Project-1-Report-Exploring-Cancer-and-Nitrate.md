@@ -1,11 +1,9 @@
 
 # Building an App to Explore Cancer and Nitrate
 
-**Project 1 Report**
-
 2020-02-23
 
-Cory Leigh Rahman, University of Wisconsin-Madison, Master's in GIS & Web Map Programming, GEOG 777: Capstone in GIS Development
+Cory Leigh Rahman, University of Wisconsin-Madison, Master's in GIS & Web Map Programming, GEOG 777: Capstone in GIS Development, **Project 1 Report**
 
 # Introduction
 
