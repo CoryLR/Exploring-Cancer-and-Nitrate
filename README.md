@@ -22,7 +22,7 @@ To see how nitrate and cancer are related, linear regression was run on state-wi
 - Independent (Explanatory) Variable: **Nitrate Concentration** from water well samples (parts per million)
 - Dependent Variable: **Cancer Rate** from census tracts (percentage of population)
 
-![Analysis Flow Chart](images/analysis-flow-chart.png#w70)
+![Analysis Flow Chart](dev-journal/2020-03-01-Project-1-Report/images/analysis-flow-chart.png#w70)
 
 The green-colored steps (**Interpolation**, **Residuals**, and **Results**) are the steps the end-user can interact with. The rest is done automatically by the back-end server in Python. End-users can set the Interpolation parameters, run the full analysis, and explore the results.
 
@@ -92,7 +92,7 @@ Once the request is received, the following actions are taken:
 
 ## Front-end Interaction and Design
 
-![User Interface Jumbotron](images/ui-jumbotron.png#w70)
+![User Interface Jumbotron](dev-journal/2020-03-01-Project-1-Report/images/ui-jumbotron.png#w70)
 
 The end-user is guided through the problem and shown how to explore it. The interface is split up into two main sections:
 
@@ -101,11 +101,11 @@ The end-user is guided through the problem and shown how to explore it. The inte
 
 The Introduction section explains how nitrate gets in water and prompts the end-user with the question of how nitrate and cancer are related. The previously seen Analysis Flow Chart graphic is displayed for the end-user here, along with optional supplementary information.
 
-![User Interface Introduction Section](images/ui-introduction-small.png#w70)
+![User Interface Introduction Section](dev-journal/2020-03-01-Project-1-Report/images/ui-introduction-small.png#w70)
 
 The Analysis section provides interfaces for the inputs and results. Because the most subjective part of this analysis is the IDW (inverse distance weighted) interpolation, the end-user is allowed to input their own values for the Power (distance decay exponent) and Smoothing values. After the end-user selects their IDW inputs and runs the tool, they are presented with a map of residuals from the regression alongside a full regression summary. 
 
-![User Interface Analysis Section](images/ui-analysis-small.png#w70)
+![User Interface Analysis Section](dev-journal/2020-03-01-Project-1-Report/images/ui-analysis-small.png#w70)
 
 The code for the front-end can be found in the folder `front-end-exploring-cancer-nitrate/`
 
@@ -113,7 +113,7 @@ The code for the front-end can be found in the folder `front-end-exploring-cance
 
 After experimenting with multiple IDW inputs, the highest R-Squared value received was using the default values of "`2`" for the distance decay exponent and "`1`" for the Smoothing value. These inputs yielded the following results:
 
-![Regression Results](images/regression-results-small.png)
+![Regression Results](dev-journal/2020-03-01-Project-1-Report/images/regression-results-small.png)
 
 ## Map of Residuals
 
